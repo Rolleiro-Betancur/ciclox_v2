@@ -46,8 +46,31 @@ class ApiConstants {
   static String get recompensas      => '/recompensas';
   static String recompensaById(int id) => '/recompensas/$id';
 
+  // ── Canjes ────────────────────────────────────────────────
+  static String get canjes           => '/canjes';
+  static String canjeById(int id)    => '/canjes/$id';
+  static String confirmarCanje(int id) => '/canjes/$id/confirmar';
+  static String rechazarCanje(int id)  => '/canjes/$id/rechazar';
+
+  // ── Notificaciones ────────────────────────────────────────
+  static String get notificaciones => '/notificaciones';
+  static String leerNotificacion(int id) => '/notificaciones/$id/leer';
+  static String get leerTodasNotificaciones => '/notificaciones/leer-todas';
+
+  // ── Trazabilidad ───────────────────────────────────────────
+  static String trazabilidadDispositivo(int id) => '/trazabilidad/dispositivo/$id';
+  static String ubicacionRecolector(int id) => '/trazabilidad/solicitud/$id/ubicacion';
+
   // ── Recolectores (empresa) ────────────────────────────────
-  static String get recolectores     => '/recolectores';
+  static String get recolectores => '/empresa/recolectores';
+  static String recolectorById(int id) => '/empresa/recolectores/$id';
+
+  // ── Empresa solicitudes ────────────────────────────────────
+  static String get empresaSolicitudes => '/empresa/solicitudes';
+  static String aceptarSolicitud(int id) => '/empresa/solicitudes/$id/aceptar';
+  static String rechazarSolicitud(int id) => '/empresa/solicitudes/$id/rechazar';
+  static String enTransitoSolicitud(int id) => '/empresa/solicitudes/$id/en-transito';
+  static String recolectadaSolicitud(int id) => '/empresa/solicitudes/$id/recolectada';
 
   // ── Timeouts ─────────────────────────────────────────────
   static const Duration connectTimeout = Duration(seconds: 15);

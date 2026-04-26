@@ -119,7 +119,7 @@ class HomeUsuarioPage extends StatelessWidget {
                     // Sigue tu reciclaje — con mapa
                     _MapCard(
                       onTap: () =>
-                          context.push(AppRoutes.dispositivos),
+                          context.push(AppRoutes.trazabilidad),
                     ),
                   ],
                 ),

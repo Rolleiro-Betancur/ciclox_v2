@@ -365,6 +365,33 @@ class _SolicitudDetalleCard extends StatelessWidget {
               ),
             ),
           ),
+        if (isAceptada) ...[
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => context.push(
+                AppRoutes.trazabilidadMapa,
+                extra: solicitud.id,
+              ),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                side: const BorderSide(color: AppColors.navy),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              icon: const Icon(Icons.map_outlined, color: AppColors.navy),
+              label: Text(
+                'Ver trazabilidad',
+                style: AppTextStyles.button.copyWith(
+                  color: AppColors.navy,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+        ],
         if (isRechazada)
           SizedBox(
             width: 220,
@@ -472,6 +499,31 @@ class _PuntosCompletadaCard extends StatelessWidget {
             ),
             child: Text('Ver recompensa',
                 style: AppTextStyles.button.copyWith(fontSize: 14)),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          width: 220,
+          child: OutlinedButton.icon(
+            onPressed: () => context.push(
+              AppRoutes.trazabilidad,
+              extra: solicitud.dispositivoId,
+            ),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              side: const BorderSide(color: AppColors.navy),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            icon: const Icon(Icons.timeline_rounded, color: AppColors.navy),
+            label: Text(
+              'Ver trazabilidad',
+              style: AppTextStyles.button.copyWith(
+                color: AppColors.navy,
+                fontSize: 14,
+              ),
+            ),
           ),
         ),
       ],

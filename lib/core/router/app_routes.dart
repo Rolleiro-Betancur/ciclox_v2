@@ -9,6 +9,10 @@ class AppRoutes {
 
   static const homeUsuario         = '/home';
   static const homeEmpresa         = '/empresa/home';
+  static const empresaSolicitudes  = '/empresa/solicitudes';
+  static const empresaRecolectores = '/empresa/recolectores';
+  static const empresaReciclajes   = '/empresa/reciclajes';
+  static const empresaReportes     = '/empresa/reportes';
 
   static const dispositivos        = '/dispositivos';
   static const registroDispositivo = '/dispositivos/registro';

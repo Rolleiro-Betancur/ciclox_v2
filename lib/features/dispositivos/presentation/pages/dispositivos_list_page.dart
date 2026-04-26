@@ -130,9 +130,14 @@ class _DispositivoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CicloxCard(
-      child: Row(
-        children: [
+    return GestureDetector(
+      onTap: () => context.push(
+        AppRoutes.trazabilidad,
+        extra: dispositivo.id,
+      ),
+      child: CicloxCard(
+        child: Row(
+          children: [
           // Ícono tipo
           Container(
             width: 56,
@@ -169,9 +174,10 @@ class _DispositivoCard extends StatelessWidget {
             ),
           ),
 
-          const Icon(Icons.arrow_forward_ios_rounded,
-              size: 16, color: AppColors.textSecondary),
-        ],
+            const Icon(Icons.arrow_forward_ios_rounded,
+                size: 16, color: AppColors.textSecondary),
+          ],
+        ),
       ),
     );
   }

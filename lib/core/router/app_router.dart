@@ -12,6 +12,12 @@ import '../../features/auth/presentation/pages/verificar_codigo_page.dart';
 import '../../features/auth/presentation/pages/cambiar_contrasena_page.dart';
 import '../../features/home/presentation/pages/home_usuario_page.dart';
 import '../../features/home/presentation/pages/home_empresa_page.dart';
+import '../../features/empresas/presentation/pages/empresa_solicitudes_page.dart';
+import '../../features/empresas/presentation/pages/empresa_recolectores_page.dart';
+import '../../features/empresas/presentation/pages/empresa_reciclajes_page.dart';
+import '../../features/empresas/presentation/pages/empresa_reportes_page.dart';
+import '../../features/empresas/solicitudes/presentation/bloc/empresa_solicitudes_bloc.dart';
+import '../../features/empresas/recolectores/presentation/bloc/recolectores_bloc.dart';
 import '../../features/dispositivos/presentation/pages/dispositivos_list_page.dart';
 import '../../features/dispositivos/presentation/pages/registro_dispositivo_page.dart';
 import '../../features/dispositivos/presentation/pages/registro_exito_page.dart';
@@ -23,10 +29,21 @@ import '../../features/solicitudes/presentation/pages/solicitudes_page.dart';
 import '../../features/solicitudes/presentation/bloc/solicitudes_bloc.dart';
 import '../../features/puntos/presentation/bloc/puntos_bloc.dart';
 import '../../features/puntos/presentation/pages/tus_puntos_page.dart';
+import '../../features/notificaciones/presentation/bloc/notificaciones_bloc.dart';
 import '../../features/notificaciones/presentation/pages/notificaciones_page.dart';
+import '../../features/trazabilidad/presentation/bloc/trazabilidad_bloc.dart';
+import '../../features/trazabilidad/presentation/pages/trazabilidad_lista_page.dart';
+import '../../features/trazabilidad/presentation/pages/trazabilidad_detalle_page.dart';
+import '../../features/trazabilidad/presentation/pages/trazabilidad_mapa_page.dart';
 import '../../features/recompensas/presentation/bloc/recompensas_bloc.dart';
 import '../../features/recompensas/presentation/pages/bono_ciclox_page.dart';
 import '../../features/recompensas/presentation/pages/mercaditos_page.dart';
+import '../../features/recompensas/domain/entities/recompensa_entity.dart';
+import '../../features/canjes/presentation/bloc/canjes_bloc.dart';
+import '../../features/canjes/presentation/pages/qr_bono_ciclox_page.dart';
+import '../../features/canjes/presentation/pages/qr_mercaditos_page.dart';
+import '../../features/canjes/presentation/pages/canje_exitoso_page.dart';
+import '../../features/canjes/presentation/pages/canje_rechazado_page.dart';
 import '../../injection_container.dart';
 import '../storage/secure_storage.dart';
 
@@ -119,6 +136,28 @@ GoRouter createAppRouter() {
         path: AppRoutes.homeEmpresa,
         builder: (_, __) => const HomeEmpresaPage(),
       ),
+      GoRoute(
+        path: AppRoutes.empresaSolicitudes,
+        builder: (_, __) => BlocProvider(
+          create: (_) => sl<EmpresaSolicitudesBloc>(),
+          child: const EmpresaSolicitudesPage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.empresaRecolectores,
+        builder: (_, __) => BlocProvider(
+          create: (_) => sl<RecolectoresBloc>(),
+          child: const EmpresaRecolectoresPage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.empresaReciclajes,
+        builder: (_, __) => const EmpresaReciclajesPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.empresaReportes,
+        builder: (_, __) => const EmpresaReportesPage(),
+      ),
 
       // ── DISPOSITIVOS ─────────────────────────────────────────────
       GoRoute(
@@ -186,11 +225,80 @@ GoRouter createAppRouter() {
           child: const MercaditosPage(),
         ),
       ),
+      GoRoute(
+        path: AppRoutes.qrBonoCiclox,
+        builder: (_, state) {
+          final recompensa = state.extra as RecompensaEntity?;
+          if (recompensa == null) return const CanjeRechazadoPage();
+          return BlocProvider(
+            create: (_) => sl<CanjesBloc>(),
+            child: QrBonoCicloxPage(recompensa: recompensa),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.qrMercaditos,
+        builder: (_, state) {
+          final recompensa = state.extra as RecompensaEntity?;
+          if (recompensa == null) return const CanjeRechazadoPage();
+          return BlocProvider(
+            create: (_) => sl<CanjesBloc>(),
+            child: QrMercaditosPage(recompensa: recompensa),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.canjeExitoso,
+        builder: (_, __) => BlocProvider(
+          create: (_) => sl<CanjesBloc>(),
+          child: const CanjeExitosoPage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.canjeRechazado,
+        builder: (_, __) => BlocProvider(
+          create: (_) => sl<CanjesBloc>(),
+          child: const CanjeRechazadoPage(),
+        ),
+      ),
+
+      // ── TRAZABILIDAD ─────────────────────────────────────────────
+      GoRoute(
+        path: AppRoutes.trazabilidad,
+        builder: (_, __) => MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => sl<SolicitudesBloc>()),
+            BlocProvider(create: (_) => sl<TrazabilidadBloc>()),
+          ],
+          child: const TrazabilidadListaPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/trazabilidad/detalle',
+        builder: (_, state) => BlocProvider(
+          create: (_) => sl<TrazabilidadBloc>(),
+          child: TrazabilidadDetallePage(
+            dispositivoId: (state.extra as int?) ?? 0,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.trazabilidadMapa,
+        builder: (_, state) => BlocProvider(
+          create: (_) => sl<TrazabilidadBloc>(),
+          child: TrazabilidadMapaPage(
+            solicitudId: (state.extra as int?) ?? 0,
+          ),
+        ),
+      ),
 
       // ── NOTIFICACIONES ───────────────────────────────────────────
       GoRoute(
         path: AppRoutes.notificaciones,
-        builder: (_, __) => const NotificacionesPage(),
+        builder: (_, __) => BlocProvider(
+          create: (_) => sl<NotificacionesBloc>(),
+          child: const NotificacionesPage(),
+        ),
       ),
     ],
 
